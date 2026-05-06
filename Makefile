@@ -35,7 +35,7 @@ base_name = $(patsubst bf-%,%,$(1))
 
 .PHONY: all clean list install $(TOOLS)
 
-all: $(foreach t,$(TOOLS),$(OUTDIR)/$(t)/$(call base_name,$(t)).o)
+all: $(foreach t,$(TOOLS),$(OUTDIR)/$(t)/$(call base_name,$(t)).o $(OUTDIR)/$(t)/extension.json)
 	@echo ""
 	@echo "  Built $(words $(TOOLS)) BOFs -> $(OUTDIR)/"
 	@echo "  Run 'make install' to copy to $(INSTALL)/"
@@ -49,9 +49,12 @@ $(OUTDIR)/$(1)/$(call base_name,$(1)).o: $(1)/$(call base_name,$(1)).c include/b
 	@mkdir -p $(OUTDIR)/$(1)
 	@echo "  CC  $$<"
 	@$$(CC) $$(CFLAGS) -o $$@ $$<
-	@cp $(1)/extension.json $(OUTDIR)/$(1)/extension.json
 
-$(1): $(OUTDIR)/$(1)/$(call base_name,$(1)).o
+$(OUTDIR)/$(1)/extension.json: $(1)/extension.json
+	@mkdir -p $(OUTDIR)/$(1)
+	@cp -p $$< $$@
+
+$(1): $(OUTDIR)/$(1)/$(call base_name,$(1)).o $(OUTDIR)/$(1)/extension.json
 endef
 
 $(foreach t,$(TOOLS),$(eval $(call TOOL_RULE,$(t))))
