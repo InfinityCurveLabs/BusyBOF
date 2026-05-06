@@ -6,8 +6,9 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "cut.o"}],
     "arguments": [
-      {"name": "spec", "type": "string", "desc": "-d<delim> -f<fields> or -c<range>"},
-      {"name": "file", "type": "string", "desc": "Input file"}
+      {"name": "field", "type": "string", "desc": "Field number to extract"},
+      {"name": "delimiter", "type": "string", "desc": "Delimiter character (default: tab)", "optional": true},
+      {"name": "file", "type": "string", "desc": "Input file", "optional": true}
     ]
   }]
 }

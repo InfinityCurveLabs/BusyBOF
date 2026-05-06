@@ -1,33 +1,44 @@
 /*
  * cut.c — BOF: extract fields by delimiter
- * Usage: cut -d<delim> -f<field> <file>
+ * Usage: cut --field <N> [--delimiter <char>] [--file <path>]
  */
 #include "bofdefs.h"
 
 void go(char *args, int alen) {
     datap parser;
     BeaconDataParse(&parser, args, alen);
-    char *spec = BeaconDataExtract(&parser, NULL);
-    char *filepath = BeaconDataExtract(&parser, NULL);
-    if (!spec || !*spec || !filepath || !*filepath)
-        BOF_ERROR("Usage: cut -d<delim> -f<field> <file>");
+    char *field_str = BeaconDataExtract(&parser, NULL);
+    char *delim_str = BeaconDataExtract(&parser, NULL);
+    char *file_str  = BeaconDataExtract(&parser, NULL);
+
+    if (!field_str || !*field_str)
+        BOF_ERROR("Usage: cut --field <N> [--delimiter <char>] [--file <path>]");
+
+    int field = atoi(field_str);
+    if (field < 1)
+        BOF_ERROR("cut: field must be >= 1");
 
     char delim = '\t';
-    int field = 0;
-    char *saveptr;
-    char *tok = strtok_r(spec, " ", &saveptr);
+    if (delim_str && *delim_str)
+        delim = delim_str[0];
 
-    while (tok) {
-        if (strncmp(tok, "-d", 2) == 0) delim = tok[2] ? tok[2] : '\t';
-        else if (strncmp(tok, "-f", 2) == 0) field = atoi(tok + 2);
-        tok = strtok_r(NULL, " ", &saveptr);
+    /* Pipe support: executor appends pipe file path to the first packed
+       string, so field_str may be "1 /tmp/.bofpipe-XXXXX". */
+    char *pipe_file = field_str;
+    while (*pipe_file && *pipe_file != ' ') pipe_file++;
+    while (*pipe_file == ' ') pipe_file++;
+    if (!*pipe_file) pipe_file = NULL;
+
+    FILE *fp = NULL;
+    if (file_str && *file_str) {
+        fp = fopen(file_str, "r");
+        if (!fp) BOF_ERROR("cut: %s: %s", file_str, strerror(errno));
+    } else if (pipe_file) {
+        fp = fopen(pipe_file, "r");
+        if (!fp) BOF_ERROR("cut: %s: %s", pipe_file, strerror(errno));
+    } else {
+        BOF_ERROR("Usage: cut --field <N> [--delimiter <char>] [--file <path>]");
     }
-
-    if (field < 1)
-        BOF_ERROR("Usage: cut -d<delim> -f<field> <file>");
-
-    FILE *fp = fopen(filepath, "r");
-    if (!fp) BOF_ERROR("cut: %s: %s", filepath, strerror(errno));
 
     char line[8192];
     while (fgets(line, sizeof(line), fp)) {
