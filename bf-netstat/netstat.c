@@ -70,7 +70,7 @@ static void find_pid_by_inode(unsigned long inode, char *out, size_t outsz) {
     closedir(proc);
 }
 
-static void show_connections(const char *path, const char *proto, int listen_only, int show_proc) {
+static void show_connections(const char *path, const char *proto, int listen_only, int show_proc, int is_udp) {
     FILE *fp = fopen(path, "r");
     if (!fp) return;
 
@@ -86,20 +86,25 @@ static void show_connections(const char *path, const char *proto, int listen_onl
                    &idx, local_hex, remote_hex, &state, &uid, &inode) < 5)
             continue;
 
-        if (listen_only && state != 10) continue; /* 10 = LISTEN */
+        if (listen_only) {
+            if (is_udp && state != 7) continue;  /* 7 = UDP unconnected (listening) */
+            if (!is_udp && state != 10) continue; /* 10 = TCP LISTEN */
+        }
 
         char local[64], remote[64];
         parse_addr(local_hex, local, sizeof(local));
         parse_addr(remote_hex, remote, sizeof(remote));
 
+        const char *ststr = is_udp ? (state == 1 ? "ESTABLISHED" : "UNCONN") : tcp_state(state);
+
         if (show_proc) {
             char proc_info[128];
             find_pid_by_inode(inode, proc_info, sizeof(proc_info));
             BeaconPrintf(CALLBACK_OUTPUT, "%-6s %-22s %-22s %-12s %s\n",
-                proto, local, remote, tcp_state(state), proc_info);
+                proto, local, remote, ststr, proc_info);
         } else {
             BeaconPrintf(CALLBACK_OUTPUT, "%-6s %-22s %-22s %-12s %lu\n",
-                proto, local, remote, tcp_state(state), inode);
+                proto, local, remote, ststr, inode);
         }
     }
     fclose(fp);
@@ -131,8 +136,8 @@ void go(char *args, int alen) {
     BeaconPrintf(CALLBACK_OUTPUT, "%-6s %-22s %-22s %-12s %s\n",
         "Proto", "Local Address", "Foreign Address", "State", show_proc ? "PID/Program" : "Inode");
 
-    if (show_tcp) show_connections("/proc/net/tcp", "tcp", listen_only, show_proc);
-    if (show_udp) show_connections("/proc/net/udp", "udp", listen_only, show_proc);
-    if (show_tcp) show_connections("/proc/net/tcp6", "tcp6", listen_only, show_proc);
-    if (show_udp) show_connections("/proc/net/udp6", "udp6", listen_only, show_proc);
+    if (show_tcp) show_connections("/proc/net/tcp", "tcp", listen_only, show_proc, 0);
+    if (show_udp) show_connections("/proc/net/udp", "udp", listen_only, show_proc, 1);
+    if (show_tcp) show_connections("/proc/net/tcp6", "tcp6", listen_only, show_proc, 0);
+    if (show_udp) show_connections("/proc/net/udp6", "udp6", listen_only, show_proc, 1);
 }
