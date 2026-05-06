@@ -12,7 +12,7 @@ void go(char *args, int alen) {
     char *expression = BeaconDataExtract(&parser, NULL);
     char *filepath = BeaconDataExtract(&parser, NULL);
     char *delim = BeaconDataExtract(&parser, NULL);
-    if (!expression || !*expression || !filepath || !*filepath)
+    if (!expression || !*expression)
         BOF_ERROR("Usage: awk --expression '{print $N}' --file <file> [--delimiter <sep>]");
 
     char sep = ' '; /* default: whitespace */
@@ -25,6 +25,18 @@ void go(char *args, int alen) {
     if (elen >= 2 && prog[0] == '\'' && prog[elen - 1] == '\'') {
         prog[elen - 1] = '\0';
         prog++;
+    }
+
+    /* Extract embedded file path after closing '}' (injected by pipe executor) */
+    char *pipe_file = NULL;
+    char *brace = strchr(prog, '}');
+    if (brace) {
+        char *after = brace + 1;
+        while (*after == ' ') after++;
+        if (*after) {
+            pipe_file = after;
+            *brace = '\0';
+        }
     }
 
     /* Parse field numbers from {print $1,$2,...} */
@@ -41,8 +53,16 @@ void go(char *args, int alen) {
         } else p++;
     }
 
-    FILE *fp = fopen(filepath, "r");
-    if (!fp) BOF_ERROR("awk: %s: %s", filepath, strerror(errno));
+    FILE *fp = NULL;
+    if (filepath && *filepath) {
+        fp = fopen(filepath, "r");
+        if (!fp) BOF_ERROR("awk: %s: %s", filepath, strerror(errno));
+    } else if (pipe_file) {
+        fp = fopen(pipe_file, "r");
+        if (!fp) BOF_ERROR("awk: %s: %s", pipe_file, strerror(errno));
+    } else {
+        BOF_ERROR("Usage: awk --expression '{print $N}' --file <file> [--delimiter <sep>]");
+    }
 
     char line[8192];
     while (fgets(line, sizeof(line), fp)) {

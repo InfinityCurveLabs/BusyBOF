@@ -7,7 +7,7 @@
     "files": [{"os": "linux", "arch": "amd64", "path": "awk.o"}],
     "arguments": [
       {"name": "expression", "type": "string", "desc": "awk expression, e.g. '{print $1}'"},
-      {"name": "file", "type": "string", "desc": "Input file"},
+      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
       {"name": "delimiter", "type": "string", "desc": "Field separator (default: whitespace)", "optional": true}
     ]
   }]
