@@ -1,7 +1,13 @@
 {
   "name": "bf-sysctl",
-  "commands": [{"command_name": "bf-sysctl", "help": "read/write kernel parameters", "entrypoint": "go",
+  "commands": [{
+    "command_name": "bf-sysctl",
+    "help": "read/write kernel parameters",
+    "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "sysctl.o"}],
-    "arguments": [{"name": "args", "type": "string", "desc": "<key> OR -a [filter]"}]
+    "arguments": [
+      {"name": "key", "type": "string", "desc": "Sysctl key to read (omit to list all)", "optional": true},
+      {"name": "filter", "type": "string", "desc": "Filter pattern when listing all", "optional": true}
+    ]
   }]
 }

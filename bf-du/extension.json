@@ -6,7 +6,8 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "du.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-s] [path]", "optional": true}
+      {"name": "path", "type": "string", "desc": "Target path (default: .)", "optional": true},
+      {"name": "options", "type": "string", "desc": "Flags: s (summary only)", "optional": true, "choices": ["s"]}
     ]
   }]
 }

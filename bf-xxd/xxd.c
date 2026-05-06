@@ -1,6 +1,6 @@
 /*
  * xxd.c — BOF: hex dump
- * Usage: xxd [-l len] <file>
+ * Usage: xxd --file <file> [--length <N>]
  */
 #include "bofdefs.h"
 #include <ctype.h>
@@ -8,27 +8,15 @@
 void go(char *args, int alen) {
     datap parser;
     BeaconDataParse(&parser, args, alen);
-    char *argv_str = BeaconDataExtract(&parser, NULL);
+    char *filepath = BeaconDataExtract(&parser, NULL);
+    char *len_str = BeaconDataExtract(&parser, NULL);
 
-    if (!argv_str || !*argv_str)
-        BOF_ERROR("Usage: xxd [-l len] <file>");
+    if (!filepath || !*filepath)
+        BOF_ERROR("Usage: xxd --file <file> [--length <N>]");
 
     int limit = 0; /* 0 = no limit */
-    char *filepath = NULL;
-    char *saveptr;
-    char *tok = strtok_r(argv_str, " ", &saveptr);
-
-    while (tok) {
-        if (strcmp(tok, "-l") == 0) {
-            tok = strtok_r(NULL, " ", &saveptr);
-            if (tok) limit = atoi(tok);
-        } else {
-            filepath = tok;
-        }
-        tok = strtok_r(NULL, " ", &saveptr);
-    }
-
-    if (!filepath) BOF_ERROR("Usage: xxd [-l len] <file>");
+    if (len_str && *len_str)
+        limit = atoi(len_str);
 
     FILE *fp = fopen(filepath, "rb");
     if (!fp) BOF_ERROR("xxd: %s: %s", filepath, strerror(errno));

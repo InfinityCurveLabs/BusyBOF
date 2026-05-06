@@ -6,7 +6,8 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "ls.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[path] [-laF] (-F for full paths)", "optional": true}
+      {"name": "path", "type": "string", "desc": "Directory path (default: .)", "optional": true},
+      {"name": "options", "type": "string", "desc": "Flags: l (long), a (all), F (full paths)", "optional": true, "choices": ["l", "a", "F", "la", "lF", "aF", "laF"]}
     ]
   }]
 }

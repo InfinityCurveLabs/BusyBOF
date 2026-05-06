@@ -6,7 +6,8 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "rm.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-rf] <path> [path2 ...]"}
+      {"name": "path", "type": "string", "desc": "Path to remove"},
+      {"name": "options", "type": "string", "desc": "Flags: r (recursive), f (force)", "optional": true, "choices": ["r", "f", "rf"]}
     ]
   }]
 }

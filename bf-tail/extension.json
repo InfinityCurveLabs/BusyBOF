@@ -6,7 +6,8 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "tail.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-n lines] <file>"}
+      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
+      {"name": "lines", "type": "string", "desc": "Number of lines (default: 10)", "optional": true}
     ]
   }]
 }

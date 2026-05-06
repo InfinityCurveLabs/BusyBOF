@@ -6,7 +6,10 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "tr.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "<set1> <set2> <file> or -d <set1> <file>"}
+      {"name": "set1", "type": "string", "desc": "Source character set"},
+      {"name": "set2", "type": "string", "desc": "Replacement character set", "optional": true},
+      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
+      {"name": "options", "type": "string", "desc": "Flags: d (delete set1 chars)", "optional": true, "choices": ["d"]}
     ]
   }]
 }

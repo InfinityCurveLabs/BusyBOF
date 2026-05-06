@@ -6,7 +6,8 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "xxd.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-l len] <file>"}
+      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
+      {"name": "length", "type": "string", "desc": "Number of bytes to dump", "optional": true}
     ]
   }]
 }

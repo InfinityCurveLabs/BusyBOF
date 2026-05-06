@@ -1,25 +1,26 @@
 /*
  * uniq.c — BOF: remove duplicate adjacent lines
- * Usage: uniq [-c] <file>
+ * Usage: uniq [--file <file>] [--options c]
  */
 #include "bofdefs.h"
 
 void go(char *args, int alen) {
     datap parser;
     BeaconDataParse(&parser, args, alen);
-    char *argv_str = BeaconDataExtract(&parser, NULL);
-    if (!argv_str || !*argv_str) BOF_ERROR("Usage: uniq [-c] <file>");
+    char *file_str = BeaconDataExtract(&parser, NULL);
+    char *opts     = BeaconDataExtract(&parser, NULL);
 
     int show_count = 0;
-    char *filepath = NULL;
-    char *saveptr;
-    char *tok = strtok_r(argv_str, " ", &saveptr);
-    while (tok) {
-        if (strcmp(tok, "-c") == 0) show_count = 1;
-        else filepath = tok;
-        tok = strtok_r(NULL, " ", &saveptr);
+    if (opts && *opts) {
+        if (strchr(opts, 'c')) show_count = 1;
     }
-    if (!filepath) BOF_ERROR("Usage: uniq [-c] <file>");
+
+    /* Pipe support: pipe path appended to first arg (file_str) */
+    char *filepath = NULL;
+    if (file_str && *file_str)
+        filepath = file_str;
+
+    if (!filepath) BOF_ERROR("Usage: uniq --file <file> [--options c]");
 
     FILE *fp = fopen(filepath, "r");
     if (!fp) BOF_ERROR("uniq: %s: %s", filepath, strerror(errno));

@@ -1,7 +1,15 @@
 {
   "name": "bf-tar",
-  "commands": [{"command_name": "bf-tar", "help": "create, list, and extract tar archives", "entrypoint": "go",
+  "commands": [{
+    "command_name": "bf-tar",
+    "help": "create, list, and extract tar archives",
+    "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "tar.o"}],
-    "arguments": [{"name": "args", "type": "string", "desc": "-cf <archive> <path> | -tf <archive> | -xf <archive> [dir]"}]
+    "arguments": [
+      {"name": "mode", "type": "string", "desc": "Operation: create, list, or extract", "choices": ["create", "list", "extract"]},
+      {"name": "archive", "type": "string", "desc": "Archive file path"},
+      {"name": "path", "type": "string", "desc": "Source path (create) or extract destination", "optional": true},
+      {"name": "filter", "type": "string", "desc": "Filter pattern for list/extract", "optional": true}
+    ]
   }]
 }

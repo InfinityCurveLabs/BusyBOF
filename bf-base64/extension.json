@@ -6,7 +6,7 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "base64.o"}],
     "arguments": [
-      {"name": "file", "type": "string", "desc": "File to encode/decode"},
+      {"name": "file", "type": "string", "desc": "File to encode/decode", "optional": true},
       {"name": "mode", "type": "string", "desc": "encode or decode", "optional": true, "default": "encode", "choices": ["encode", "decode"]}
     ]
   }]

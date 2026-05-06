@@ -1,12 +1,12 @@
 /*
  * sysctl.c — BOF: read/write kernel parameters
- * Usage: sysctl <key> OR sysctl -a [filter]
+ * Usage: sysctl [--key <key>] [--filter <pattern>]
  */
 #include "bofdefs.h"
 
 static void read_sysctl(const char *key) {
     char path[PATH_MAX_BB];
-    /* Convert dot notation to path: net.ipv4.ip_forward → /proc/sys/net/ipv4/ip_forward */
+    /* Convert dot notation to path: net.ipv4.ip_forward -> /proc/sys/net/ipv4/ip_forward */
     snprintf(path, sizeof(path), "/proc/sys/%s", key);
     for (char *p = path + 10; *p; p++)
         if (*p == '.') *p = '/';
@@ -61,26 +61,16 @@ static void walk_sysctl(const char *dirpath, const char *prefix, const char *fil
 }
 
 void go(char *args, int alen) {
-    if (!args || alen <= 0)
-        BOF_ERROR("Usage: sysctl <key> OR sysctl -a [filter]");
-
     datap parser;
     BeaconDataParse(&parser, args, alen);
-    char *argv_str = BeaconDataExtract(&parser, NULL);
-    if (!argv_str || !*argv_str)
-        BOF_ERROR("Usage: sysctl <key> OR sysctl -a [filter]");
+    char *key    = BeaconDataExtract(&parser, NULL);
+    char *filter = BeaconDataExtract(&parser, NULL);
 
-    if (strcmp(argv_str, "-a") == 0) {
-        walk_sysctl("/proc/sys", "", NULL);
-    } else if (strncmp(argv_str, "-a ", 3) == 0) {
-        walk_sysctl("/proc/sys", "", argv_str + 3);
+    if (key && *key) {
+        /* Read specific key */
+        read_sysctl(key);
     } else {
-        /* Single key or space-separated keys */
-        char *saveptr;
-        char *tok = strtok_r(argv_str, " ", &saveptr);
-        while (tok) {
-            read_sysctl(tok);
-            tok = strtok_r(NULL, " ", &saveptr);
-        }
+        /* List all, optionally filtered */
+        walk_sysctl("/proc/sys", "", (filter && *filter) ? filter : NULL);
     }
 }

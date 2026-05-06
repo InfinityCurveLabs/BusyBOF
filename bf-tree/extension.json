@@ -6,7 +6,9 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "tree.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[path] [-a] [-d] [-F] [-L depth]", "optional": true}
+      {"name": "path", "type": "string", "desc": "Root path (default: .)", "optional": true},
+      {"name": "options", "type": "string", "desc": "Flags: a (all), d (dirs only), F (full paths)", "optional": true, "choices": ["a", "d", "F", "ad", "aF", "dF", "adF"]},
+      {"name": "depth", "type": "string", "desc": "Max depth", "optional": true}
     ]
   }]
 }

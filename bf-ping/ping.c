@@ -1,6 +1,6 @@
 /*
  * ping.c — BOF: test host reachability via raw ICMP
- * Usage: ping [-c count] <host>
+ * Usage: ping --host <host> [--count <n>]
  * Note: requires CAP_NET_RAW or root
  */
 #include "bofdefs.h"
@@ -23,26 +23,16 @@ static uint16_t checksum(void *data, int len) {
 void go(char *args, int alen) {
     datap parser;
     BeaconDataParse(&parser, args, alen);
-    char *argv_str = BeaconDataExtract(&parser, NULL);
+    char *host      = BeaconDataExtract(&parser, NULL);
+    char *count_str = BeaconDataExtract(&parser, NULL);
 
-    if (!argv_str || !*argv_str)
-        BOF_ERROR("Usage: ping [-c count] <host>");
+    if (!host || !*host)
+        BOF_ERROR("Usage: ping --host <host> [--count <n>]");
 
     int count = 3;
-    char *host = NULL;
-    char *saveptr;
-    char *tok = strtok_r(argv_str, " ", &saveptr);
-    while (tok) {
-        if (strcmp(tok, "-c") == 0) {
-            tok = strtok_r(NULL, " ", &saveptr);
-            if (tok) count = atoi(tok);
-        } else {
-            host = tok;
-        }
-        tok = strtok_r(NULL, " ", &saveptr);
-    }
-
-    if (!host) BOF_ERROR("Usage: ping [-c count] <host>");
+    if (count_str && *count_str)
+        count = atoi(count_str);
+    if (count < 1) count = 1;
 
     /* Resolve hostname */
     struct addrinfo hints = {0}, *res;

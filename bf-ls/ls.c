@@ -1,7 +1,6 @@
 /*
  * ls.c — BOF: list directory contents
- * Usage: ls [path] [-la]
- * Supports -l (long), -a (all), -la combo
+ * Args: path (optional, default "."), options (optional, flags: l a F)
  */
 #include "bofdefs.h"
 #include <sys/ioctl.h>
@@ -28,24 +27,17 @@ void go(char *args, int alen) {
     if (args && alen > 0) {
         datap parser;
         BeaconDataParse(&parser, args, alen);
-        char *argv_str = BeaconDataExtract(&parser, NULL);
-        if (argv_str && *argv_str) {
-        /* Parse flags and path */
-        char *saveptr;
-        char *tok = strtok_r(argv_str, " ", &saveptr);
-        while (tok) {
-            if (tok[0] == '-') {
-                for (int i = 1; tok[i]; i++) {
-                    if (tok[i] == 'l') long_fmt = 1;
-                    if (tok[i] == 'a') show_all = 1;
-                    if (tok[i] == 'F') full_path = 1;
-                }
-            } else {
-                strncpy(path, tok, sizeof(path) - 1);
-                path[sizeof(path) - 1] = '\0';
-            }
-            tok = strtok_r(NULL, " ", &saveptr);
+        char *path_arg = BeaconDataExtract(&parser, NULL);
+        char *options  = BeaconDataExtract(&parser, NULL);
+
+        if (path_arg && *path_arg) {
+            strncpy(path, path_arg, sizeof(path) - 1);
+            path[sizeof(path) - 1] = '\0';
         }
+        if (options && *options) {
+            if (strchr(options, 'l')) long_fmt  = 1;
+            if (strchr(options, 'a')) show_all  = 1;
+            if (strchr(options, 'F')) full_path = 1;
         }
     }
 

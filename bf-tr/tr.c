@@ -1,31 +1,52 @@
 /*
  * tr.c — BOF: translate/delete characters from stdin-like input (file)
- * Usage: tr <set1> <set2> <file>  OR  tr -d <set1> <file>
+ * Usage: tr --set1 <chars> [--set2 <chars>] [--file <path>] [--options d]
  */
 #include "bofdefs.h"
 
 void go(char *args, int alen) {
     datap parser;
     BeaconDataParse(&parser, args, alen);
-    char *argv_str = BeaconDataExtract(&parser, NULL);
-    if (!argv_str || !*argv_str)
-        BOF_ERROR("Usage: tr [-d] <set1> [set2] <file>");
+    char *set1     = BeaconDataExtract(&parser, NULL);
+    char *set2     = BeaconDataExtract(&parser, NULL);
+    char *file_str = BeaconDataExtract(&parser, NULL);
+    char *opts     = BeaconDataExtract(&parser, NULL);
+
+    if (!set1 || !*set1)
+        BOF_ERROR("Usage: tr --set1 <chars> [--set2 <chars>] [--file <path>] [--options d]");
 
     int delete_mode = 0;
-    char *set1 = NULL, *set2 = NULL, *filepath = NULL;
-    char *saveptr;
-    char *tok = strtok_r(argv_str, " ", &saveptr);
-
-    while (tok) {
-        if (strcmp(tok, "-d") == 0) delete_mode = 1;
-        else if (!set1) set1 = tok;
-        else if (!delete_mode && !set2) set2 = tok;
-        else filepath = tok;
-        tok = strtok_r(NULL, " ", &saveptr);
+    if (opts && *opts) {
+        if (strchr(opts, 'd')) delete_mode = 1;
     }
 
-    if (delete_mode && !filepath) { filepath = set2; set2 = NULL; }
-    if (!set1 || !filepath) BOF_ERROR("Usage: tr [-d] <set1> [set2] <file>");
+    /*
+     * Pipe support: the pipe executor appends the temp file path to the
+     * first packed string (set1).  Scan for a space followed by a '/'
+     * to detect and extract it.
+     */
+    char *pipe_file = NULL;
+    char *scan = set1;
+    while (*scan) {
+        if (*scan == ' ' && *(scan + 1) == '/') {
+            *scan = '\0';
+            pipe_file = scan + 1;
+            break;
+        }
+        scan++;
+    }
+
+    char *filepath = NULL;
+    if (file_str && *file_str)
+        filepath = file_str;
+    else if (pipe_file)
+        filepath = pipe_file;
+
+    if (!filepath)
+        BOF_ERROR("Usage: tr --set1 <chars> [--set2 <chars>] [--file <path>] [--options d]");
+
+    if (!delete_mode && (!set2 || !*set2))
+        BOF_ERROR("tr: set2 is required unless delete mode (-d)");
 
     FILE *fp = fopen(filepath, "r");
     if (!fp) BOF_ERROR("tr: %s: %s", filepath, strerror(errno));

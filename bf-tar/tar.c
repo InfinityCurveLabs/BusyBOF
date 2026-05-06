@@ -1,8 +1,6 @@
 /*
  * tar.c — BOF: create, list, and extract POSIX tar archives
- * Usage: tar -cf <archive> <path>    (create)
- *        tar -tf <archive>           (list)
- *        tar -xf <archive> [dir]     (extract)
+ * Usage: tar --mode <create|list|extract> --archive <file> [--path <dir>] [--filter <pat>]
  */
 #include "bofdefs.h"
 
@@ -189,7 +187,8 @@ static int mkdir_p(const char *path, mode_t mode) {
     return mkdir(tmp, mode);
 }
 
-static void tar_extract_or_list(const char *archive, const char *destdir, int list_only) {
+static void tar_extract_or_list(const char *archive, const char *destdir,
+                                int list_only, const char *filter) {
     FILE *fp = fopen(archive, "rb");
     if (!fp) BOF_ERROR("tar: %s: %s", archive, strerror(errno));
 
@@ -204,6 +203,16 @@ static void tar_extract_or_list(const char *archive, const char *destdir, int li
         tar_fullname(&hdr, name, sizeof(name));
         unsigned int size = oct_to_uint(hdr.size, 12);
         unsigned int mode = oct_to_uint(hdr.mode, 8);
+
+        /* Apply filter if provided */
+        if (filter && *filter && !strstr(name, filter)) {
+            /* Skip data blocks */
+            if (size > 0) {
+                unsigned int blocks = (size + 511) / 512;
+                fseek(fp, (long)blocks * 512, SEEK_CUR);
+            }
+            continue;
+        }
 
         if (list_only) {
             BeaconPrintf(CALLBACK_OUTPUT, "%s\n", name);
@@ -266,44 +275,19 @@ static void tar_extract_or_list(const char *archive, const char *destdir, int li
 /* ── Entry point ────────────────────────────────────── */
 
 void go(char *args, int alen) {
-    if (!args || alen <= 0)
-        BOF_ERROR("Usage: tar -cf <archive> <path>  |  tar -tf <archive>  |  tar -xf <archive> [dir]");
-
     datap parser;
     BeaconDataParse(&parser, args, alen);
-    char *argv_str = BeaconDataExtract(&parser, NULL);
-    if (!argv_str || !*argv_str)
-        BOF_ERROR("Usage: tar -cf <archive> <path>  |  tar -tf <archive>  |  tar -xf <archive> [dir]");
+    char *mode    = BeaconDataExtract(&parser, NULL);
+    char *archive = BeaconDataExtract(&parser, NULL);
+    char *path    = BeaconDataExtract(&parser, NULL);
+    char *filter  = BeaconDataExtract(&parser, NULL);
 
-    int do_create = 0, do_list = 0, do_extract = 0;
-    char *archive = NULL, *path = NULL, *destdir = NULL;
+    if (!mode || !*mode || !archive || !*archive)
+        BOF_ERROR("Usage: tar --mode <create|list|extract> --archive <file> [--path <dir>] [--filter <pat>]");
 
-    char *saveptr;
-    char *tok = strtok_r(argv_str, " ", &saveptr);
-    while (tok) {
-        if (tok[0] == '-') {
-            for (int i = 1; tok[i]; i++) {
-                if (tok[i] == 'c') do_create = 1;
-                if (tok[i] == 't') do_list = 1;
-                if (tok[i] == 'x') do_extract = 1;
-                if (tok[i] == 'f') {
-                    tok = strtok_r(NULL, " ", &saveptr);
-                    if (tok) archive = tok;
-                }
-            }
-        } else if (!path) {
-            path = tok;
-        } else {
-            destdir = tok;
-        }
-        tok = strtok_r(NULL, " ", &saveptr);
-    }
-
-    if (!archive)
-        BOF_ERROR("Usage: tar -cf <archive> <path>  |  tar -tf <archive>  |  tar -xf <archive> [dir]");
-
-    if (do_create) {
-        if (!path) BOF_ERROR("tar: -c requires a source path");
+    if (strcmp(mode, "create") == 0) {
+        if (!path || !*path)
+            BOF_ERROR("tar: create requires --path <source>");
 
         FILE *out = fopen(archive, "wb");
         if (!out) BOF_ERROR("tar: %s: %s", archive, strerror(errno));
@@ -324,14 +308,16 @@ void go(char *args, int alen) {
         stat(archive, &st);
         BeaconPrintf(CALLBACK_OUTPUT, "Created %s (%ld bytes)\n", archive, (long)st.st_size);
 
-    } else if (do_list) {
-        tar_extract_or_list(archive, NULL, 1);
+    } else if (strcmp(mode, "list") == 0) {
+        tar_extract_or_list(archive, NULL, 1,
+                            (filter && *filter) ? filter : NULL);
 
-    } else if (do_extract) {
-        if (!destdir) destdir = path ? path : ".";
-        tar_extract_or_list(archive, destdir, 0);
+    } else if (strcmp(mode, "extract") == 0) {
+        const char *destdir = (path && *path) ? path : ".";
+        tar_extract_or_list(archive, destdir, 0,
+                            (filter && *filter) ? filter : NULL);
 
     } else {
-        BOF_ERROR("Usage: tar -cf <archive> <path>  |  tar -tf <archive>  |  tar -xf <archive> [dir]");
+        BOF_ERROR("tar: unknown mode '%s' (use create, list, or extract)", mode);
     }
 }

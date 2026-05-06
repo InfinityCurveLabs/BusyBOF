@@ -1,6 +1,6 @@
 /*
  * du.c — BOF: estimate disk usage
- * Usage: du [-s] [path]
+ * Args: path (optional, default "."), options (optional, flags: s)
  */
 #include "bofdefs.h"
 
@@ -57,15 +57,13 @@ void go(char *args, int alen) {
     if (args && alen > 0) {
         datap parser;
         BeaconDataParse(&parser, args, alen);
-        char *argv_str = BeaconDataExtract(&parser, NULL);
-        if (argv_str && *argv_str) {
-            char *saveptr;
-            char *tok = strtok_r(argv_str, " ", &saveptr);
-            while (tok) {
-                if (strcmp(tok, "-s") == 0) summary = 1;
-                else path = tok;
-                tok = strtok_r(NULL, " ", &saveptr);
-            }
+        char *path_arg = BeaconDataExtract(&parser, NULL);
+        char *options  = BeaconDataExtract(&parser, NULL);
+
+        if (path_arg && *path_arg)
+            path = path_arg;
+        if (options && *options) {
+            if (strchr(options, 's')) summary = 1;
         }
     }
 

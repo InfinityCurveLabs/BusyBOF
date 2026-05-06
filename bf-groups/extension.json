@@ -2,6 +2,8 @@
   "name": "bf-groups",
   "commands": [{"command_name": "bf-groups", "help": "print group memberships", "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "groups.o"}],
-    "arguments": [{"name": "args", "type": "string", "desc": "[user]", "optional": true}]
+    "arguments": [
+      {"name": "user", "type": "string", "desc": "Username (default: current user)", "optional": true}
+    ]
   }]
 }

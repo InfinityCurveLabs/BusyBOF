@@ -6,7 +6,9 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "grep.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-inv] <pattern> <file>"}
+      {"name": "pattern", "type": "string", "desc": "Search pattern"},
+      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
+      {"name": "options", "type": "string", "desc": "Flags: i (ignore case), n (line numbers), v (invert)", "optional": true, "choices": ["i", "n", "v", "in", "iv", "nv", "inv"]}
     ]
   }]
 }

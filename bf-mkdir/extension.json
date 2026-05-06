@@ -6,7 +6,8 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "mkdir.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-p] <dir> [dir2 ...]"}
+      {"name": "path", "type": "string", "desc": "Directory to create"},
+      {"name": "options", "type": "string", "desc": "Flags: p (create parents)", "optional": true, "choices": ["p"]}
     ]
   }]
 }

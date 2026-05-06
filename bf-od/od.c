@@ -1,43 +1,30 @@
 /*
  * od.c — BOF: octal dump
- * Usage: od [-A x|o|d|n] [-t x1|o1|c] [-N bytes] <file>
+ * Usage: od --file <file> [--address_format x|o|d|n] [--type_format x|o|c] [--max_bytes N]
  */
 #include "bofdefs.h"
 
 void go(char *args, int alen) {
-    if (!args || alen <= 0)
-        BOF_ERROR("Usage: od [-A x|o|d] [-t x1|o1|c] [-N bytes] <file>");
-
     datap parser;
     BeaconDataParse(&parser, args, alen);
-    char *argv_str = BeaconDataExtract(&parser, NULL);
-    if (!argv_str || !*argv_str)
-        BOF_ERROR("Usage: od [-A x|o|d] [-t x1|o1|c] [-N bytes] <file>");
+    char *filepath = BeaconDataExtract(&parser, NULL);
+    char *addr_fmt_str = BeaconDataExtract(&parser, NULL);
+    char *type_fmt_str = BeaconDataExtract(&parser, NULL);
+    char *max_bytes_str = BeaconDataExtract(&parser, NULL);
+
+    if (!filepath || !*filepath)
+        BOF_ERROR("Usage: od --file <file> [--address_format x|o|d|n] [--type_format x|o|c] [--max_bytes N]");
 
     char addr_fmt = 'o';  /* o=octal, x=hex, d=decimal, n=none */
     char type = 'o';      /* o=octal bytes, x=hex bytes, c=chars */
     int max_bytes = 0;    /* 0 = all */
-    char *filepath = NULL;
 
-    char *saveptr;
-    char *tok = strtok_r(argv_str, " ", &saveptr);
-    while (tok) {
-        if (strcmp(tok, "-A") == 0) {
-            tok = strtok_r(NULL, " ", &saveptr);
-            if (tok) addr_fmt = tok[0];
-        } else if (strcmp(tok, "-t") == 0) {
-            tok = strtok_r(NULL, " ", &saveptr);
-            if (tok) type = tok[0];
-        } else if (strcmp(tok, "-N") == 0) {
-            tok = strtok_r(NULL, " ", &saveptr);
-            if (tok) max_bytes = atoi(tok);
-        } else {
-            filepath = tok;
-        }
-        tok = strtok_r(NULL, " ", &saveptr);
-    }
-
-    if (!filepath) BOF_ERROR("Usage: od [-A x|o|d] [-t x1|o1|c] [-N bytes] <file>");
+    if (addr_fmt_str && *addr_fmt_str)
+        addr_fmt = addr_fmt_str[0];
+    if (type_fmt_str && *type_fmt_str)
+        type = type_fmt_str[0];
+    if (max_bytes_str && *max_bytes_str)
+        max_bytes = atoi(max_bytes_str);
 
     FILE *fp = fopen(filepath, "rb");
     if (!fp) BOF_ERROR("od: %s: %s", filepath, strerror(errno));

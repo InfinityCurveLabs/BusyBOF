@@ -1,12 +1,14 @@
 /*
  * find.c — BOF: search for files
- * Usage: find <path> [-name pattern] [-type f|d|l]
- * Basic substring name matching and type filter
+ * Usage: find <path> [-name pattern] [-iname pattern] [-type f|d|l]
+ * Basic glob name matching and type filter
  */
+#define _GNU_SOURCE
 #include "bofdefs.h"
 #include <fnmatch.h>
 
 static const char *g_name_pattern = NULL;
+static int g_name_icase = 0;
 static int g_type_filter = 0; /* 0=all, 'f'=file, 'd'=dir, 'l'=link */
 
 #define FIND_MAX_DEPTH 64
@@ -37,7 +39,7 @@ static void find_recurse(const char *path, int depth) {
 
         /* Name filter */
         int name_ok = 1;
-        if (g_name_pattern && fnmatch(g_name_pattern, ent->d_name, 0) != 0)
+        if (g_name_pattern && fnmatch(g_name_pattern, ent->d_name, g_name_icase ? FNM_CASEFOLD : 0) != 0)
             name_ok = 0;
 
         if (type_ok && name_ok)
@@ -53,6 +55,7 @@ static void find_recurse(const char *path, int depth) {
 void go(char *args, int alen) {
     char *search_path = ".";
     g_name_pattern = NULL;
+    g_name_icase = 0;
     g_type_filter = 0;
 
     if (args && alen > 0) {
@@ -72,6 +75,9 @@ void go(char *args, int alen) {
                 if (strcmp(tok, "-name") == 0) {
                     tok = strtok_r(NULL, " ", &saveptr);
                     if (tok) g_name_pattern = tok;
+                } else if (strcmp(tok, "-iname") == 0) {
+                    tok = strtok_r(NULL, " ", &saveptr);
+                    if (tok) { g_name_pattern = tok; g_name_icase = 1; }
                 } else if (strcmp(tok, "-type") == 0) {
                     tok = strtok_r(NULL, " ", &saveptr);
                     if (tok) g_type_filter = tok[0];

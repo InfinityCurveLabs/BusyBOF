@@ -1,6 +1,6 @@
 /*
  * mkdir.c — BOF: create directories
- * Usage: mkdir [-p] <dir> [dir2 ...]
+ * Args: path (required), options (optional, flags: p)
  */
 #include "bofdefs.h"
 
@@ -20,27 +20,17 @@ static int mkdir_p(const char *path, mode_t mode) {
 
 void go(char *args, int alen) {
     int parents = 0;
+    char *path = NULL;
 
-    /* Parse flags from args */
+    /* Parse named arguments */
     if (args && alen > 0) {
         datap parser;
         BeaconDataParse(&parser, args, alen);
-        char *argv_str = BeaconDataExtract(&parser, NULL);
-        if (argv_str && *argv_str) {
-            char *saveptr;
-            char *tok = strtok_r(argv_str, " ", &saveptr);
-            while (tok) {
-                if (strcmp(tok, "-p") == 0) {
-                    parents = 1;
-                } else {
-                    int ret = parents ? mkdir_p(tok, 0755) : mkdir(tok, 0755);
-                    if (ret != 0 && !(parents && errno == EEXIST))
-                        BeaconPrintf(CALLBACK_ERROR, "mkdir: '%s': %s\n", tok, strerror(errno));
-                    else
-                        BeaconPrintf(CALLBACK_OUTPUT, "Created: %s\n", tok);
-                }
-                tok = strtok_r(NULL, " ", &saveptr);
-            }
+        path          = BeaconDataExtract(&parser, NULL);
+        char *options = BeaconDataExtract(&parser, NULL);
+
+        if (options && *options) {
+            if (strchr(options, 'p')) parents = 1;
         }
     }
 
@@ -59,5 +49,16 @@ void go(char *args, int alen) {
             }
         }
         fclose(pipe);
+        return;
     }
+
+    /* Direct argument */
+    if (!path || !*path)
+        BOF_ERROR("Usage: mkdir <path> [--options p]");
+
+    int ret = parents ? mkdir_p(path, 0755) : mkdir(path, 0755);
+    if (ret != 0 && !(parents && errno == EEXIST))
+        BeaconPrintf(CALLBACK_ERROR, "mkdir: '%s': %s\n", path, strerror(errno));
+    else
+        BeaconPrintf(CALLBACK_OUTPUT, "Created: %s\n", path);
 }

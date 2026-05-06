@@ -1,6 +1,6 @@
 /*
  * groups.c — BOF: print group memberships
- * Usage: groups [user]
+ * Usage: groups [--user <name>]
  */
 #include "bofdefs.h"
 
@@ -8,18 +8,15 @@ void go(char *args, int alen) {
     uid_t uid;
     char *username = NULL;
 
-    if (args && alen > 0) {
-        datap parser;
-        BeaconDataParse(&parser, args, alen);
-        char *argv_str = BeaconDataExtract(&parser, NULL);
-        if (argv_str && *argv_str) {
-            struct passwd *pw = getpwnam(argv_str);
-            if (!pw) BOF_ERROR("groups: '%s': no such user", argv_str);
-            uid = pw->pw_uid;
-            username = argv_str;
-        } else {
-            uid = getuid();
-        }
+    datap parser;
+    BeaconDataParse(&parser, args, alen);
+    char *user_str = BeaconDataExtract(&parser, NULL);
+
+    if (user_str && *user_str) {
+        struct passwd *pw = getpwnam(user_str);
+        if (!pw) BOF_ERROR("groups: '%s': no such user", user_str);
+        uid = pw->pw_uid;
+        username = user_str;
     } else {
         uid = getuid();
     }

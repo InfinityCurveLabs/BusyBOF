@@ -6,7 +6,8 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "uniq.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-c] <file>"}
+      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
+      {"name": "options", "type": "string", "desc": "Flags: c (show count)", "optional": true, "choices": ["c"]}
     ]
   }]
 }

@@ -6,7 +6,8 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "kill.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-signal] <pid> [pid2 ...]"}
+      {"name": "pid", "type": "string", "desc": "Process ID"},
+      {"name": "signal", "type": "string", "desc": "Signal name or number (default: TERM)", "optional": true, "default": "TERM", "choices": ["HUP", "INT", "KILL", "TERM", "STOP", "CONT", "USR1", "USR2"]}
     ]
   }]
 }

@@ -1,7 +1,6 @@
 /*
  * tree.c — BOF: recursive directory tree listing
- * Usage: tree [path] [-a] [-d] [-F] [-L depth]
- * Flags: -a show hidden, -d dirs only, -F full paths, -L max depth
+ * Args: path (optional, default "."), options (optional, flags: a d F), depth (optional)
  */
 #include "bofdefs.h"
 
@@ -108,27 +107,21 @@ void go(char *args, int alen) {
     if (args && alen > 0) {
         datap parser;
         BeaconDataParse(&parser, args, alen);
-        char *argv_str = BeaconDataExtract(&parser, NULL);
-        if (argv_str && *argv_str) {
-            char *saveptr;
-            char *tok = strtok_r(argv_str, " ", &saveptr);
-            while (tok) {
-                if (strcmp(tok, "-a") == 0) {
-                    show_all = 1;
-                } else if (strcmp(tok, "-d") == 0) {
-                    dirs_only = 1;
-                } else if (strcmp(tok, "-F") == 0) {
-                    full_paths = 1;
-                } else if (strcmp(tok, "-L") == 0) {
-                    tok = strtok_r(NULL, " ", &saveptr);
-                    if (tok) max_depth = atoi(tok);
-                } else if (tok[0] != '-') {
-                    strncpy(path, tok, sizeof(path) - 1);
-                    path[sizeof(path) - 1] = '\0';
-                }
-                tok = strtok_r(NULL, " ", &saveptr);
-            }
+        char *path_arg  = BeaconDataExtract(&parser, NULL);
+        char *options   = BeaconDataExtract(&parser, NULL);
+        char *depth_str = BeaconDataExtract(&parser, NULL);
+
+        if (path_arg && *path_arg) {
+            strncpy(path, path_arg, sizeof(path) - 1);
+            path[sizeof(path) - 1] = '\0';
         }
+        if (options && *options) {
+            if (strchr(options, 'a')) show_all   = 1;
+            if (strchr(options, 'd')) dirs_only  = 1;
+            if (strchr(options, 'F')) full_paths = 1;
+        }
+        if (depth_str && *depth_str)
+            max_depth = atoi(depth_str);
     }
 
     /* Verify path exists */

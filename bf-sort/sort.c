@@ -1,6 +1,6 @@
 /*
  * sort.c — BOF: sort lines of a file
- * Usage: sort [-r] [-n] <file>
+ * Usage: sort [--file <file>] [--options rn]
  */
 #include "bofdefs.h"
 
@@ -23,23 +23,22 @@ static int cmpfn(const void *a, const void *b) {
 void go(char *args, int alen) {
     datap parser;
     BeaconDataParse(&parser, args, alen);
-    char *argv_str = BeaconDataExtract(&parser, NULL);
-    if (!argv_str || !*argv_str) BOF_ERROR("Usage: sort [-rn] <file>");
+    char *file_str = BeaconDataExtract(&parser, NULL);
+    char *opts     = BeaconDataExtract(&parser, NULL);
 
     sort_reverse = 0; sort_numeric = 0;
-    char *filepath = NULL;
-    char *saveptr;
-    char *tok = strtok_r(argv_str, " ", &saveptr);
-    while (tok) {
-        if (tok[0] == '-') {
-            for (int i = 1; tok[i]; i++) {
-                if (tok[i] == 'r') sort_reverse = 1;
-                if (tok[i] == 'n') sort_numeric = 1;
-            }
-        } else filepath = tok;
-        tok = strtok_r(NULL, " ", &saveptr);
+
+    if (opts && *opts) {
+        if (strchr(opts, 'r')) sort_reverse = 1;
+        if (strchr(opts, 'n')) sort_numeric = 1;
     }
-    if (!filepath) BOF_ERROR("Usage: sort [-rn] <file>");
+
+    /* Pipe support: pipe path appended to first arg (file_str) */
+    char *filepath = NULL;
+    if (file_str && *file_str)
+        filepath = file_str;
+
+    if (!filepath) BOF_ERROR("Usage: sort --file <file> [--options rn]");
 
     FILE *fp = fopen(filepath, "r");
     if (!fp) BOF_ERROR("sort: %s: %s", filepath, strerror(errno));

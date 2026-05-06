@@ -1,6 +1,6 @@
 /*
  * rm.c — BOF: remove files/directories
- * Usage: rm [-rf] <path> [path2 ...]
+ * Args: path (required), options (optional, flags: r f)
  */
 #include "bofdefs.h"
 
@@ -36,26 +36,18 @@ static void rm_one(const char *path, int recursive, int force, int *count) {
 
 void go(char *args, int alen) {
     int recursive = 0, force = 0, count = 0;
+    char *path = NULL;
 
-    /* Parse flags from args (needed even for pipe mode) */
+    /* Parse named arguments */
     if (args && alen > 0) {
         datap parser;
         BeaconDataParse(&parser, args, alen);
-        char *argv_str = BeaconDataExtract(&parser, NULL);
-        if (argv_str && *argv_str) {
-            char *saveptr;
-            char *tok = strtok_r(argv_str, " ", &saveptr);
-            while (tok) {
-                if (tok[0] == '-') {
-                    for (int i = 1; tok[i]; i++) {
-                        if (tok[i] == 'r' || tok[i] == 'R') recursive = 1;
-                        if (tok[i] == 'f') force = 1;
-                    }
-                } else {
-                    rm_one(tok, recursive, force, &count);
-                }
-                tok = strtok_r(NULL, " ", &saveptr);
-            }
+        path          = BeaconDataExtract(&parser, NULL);
+        char *options = BeaconDataExtract(&parser, NULL);
+
+        if (options && *options) {
+            if (strchr(options, 'r')) recursive = 1;
+            if (strchr(options, 'f')) force     = 1;
         }
     }
 
@@ -70,8 +62,12 @@ void go(char *args, int alen) {
         fclose(pipe);
     }
 
+    /* Direct argument */
+    if (path && *path)
+        rm_one(path, recursive, force, &count);
+
     if (count > 0)
         BeaconPrintf(CALLBACK_OUTPUT, "Removed %d item(s)\n", count);
     else if (!pipe)
-        BOF_ERROR("Usage: rm [-rf] <path> [path2 ...]");
+        BOF_ERROR("Usage: rm <path> [--options rf]");
 }

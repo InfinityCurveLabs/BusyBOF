@@ -1,46 +1,38 @@
 /*
  * kill.c — BOF: send signal to process
- * Usage: kill [-signal] <pid> [pid2 ...]
+ * Usage: kill --pid <pid> [--signal <sig>]
  */
 #include "bofdefs.h"
 
 void go(char *args, int alen) {
-    if (!args || alen <= 0)
-        BOF_ERROR("Usage: kill [-signal] <pid> [pid2 ...]");
-
     datap parser;
     BeaconDataParse(&parser, args, alen);
-    char *argv_str = BeaconDataExtract(&parser, NULL);
+    char *pid_str    = BeaconDataExtract(&parser, NULL);
+    char *signal_str = BeaconDataExtract(&parser, NULL);
 
-    if (!argv_str || !*argv_str)
-        BOF_ERROR("Usage: kill [-signal] <pid> [pid2 ...]");
+    if (!pid_str || !*pid_str)
+        BOF_ERROR("Usage: kill --pid <pid> [--signal <sig>]");
 
     int sig = SIGTERM;
-    char *saveptr;
-    char *tok = strtok_r(argv_str, " ", &saveptr);
-
-    while (tok) {
-        if (tok[0] == '-') {
-            sig = atoi(tok + 1);
-            if (sig == 0 && strcmp(tok + 1, "0") != 0) {
-                /* Named signal */
-                if (strcasecmp(tok + 1, "HUP") == 0)  sig = SIGHUP;
-                else if (strcasecmp(tok + 1, "INT") == 0)  sig = SIGINT;
-                else if (strcasecmp(tok + 1, "KILL") == 0) sig = SIGKILL;
-                else if (strcasecmp(tok + 1, "TERM") == 0) sig = SIGTERM;
-                else if (strcasecmp(tok + 1, "STOP") == 0) sig = SIGSTOP;
-                else if (strcasecmp(tok + 1, "CONT") == 0) sig = SIGCONT;
-                else if (strcasecmp(tok + 1, "USR1") == 0) sig = SIGUSR1;
-                else if (strcasecmp(tok + 1, "USR2") == 0) sig = SIGUSR2;
-                else BOF_ERROR("kill: unknown signal '%s'", tok + 1);
-            }
-        } else {
-            pid_t pid = (pid_t)atoi(tok);
-            if (kill(pid, sig) != 0)
-                BeaconPrintf(CALLBACK_ERROR, "kill: pid %d: %s\n", pid, strerror(errno));
-            else
-                BeaconPrintf(CALLBACK_OUTPUT, "Sent signal %d to pid %d\n", sig, pid);
+    if (signal_str && *signal_str) {
+        sig = atoi(signal_str);
+        if (sig == 0 && strcmp(signal_str, "0") != 0) {
+            /* Named signal */
+            if (strcasecmp(signal_str, "HUP") == 0)       sig = SIGHUP;
+            else if (strcasecmp(signal_str, "INT") == 0)   sig = SIGINT;
+            else if (strcasecmp(signal_str, "KILL") == 0)  sig = SIGKILL;
+            else if (strcasecmp(signal_str, "TERM") == 0)  sig = SIGTERM;
+            else if (strcasecmp(signal_str, "STOP") == 0)  sig = SIGSTOP;
+            else if (strcasecmp(signal_str, "CONT") == 0)  sig = SIGCONT;
+            else if (strcasecmp(signal_str, "USR1") == 0)  sig = SIGUSR1;
+            else if (strcasecmp(signal_str, "USR2") == 0)  sig = SIGUSR2;
+            else BOF_ERROR("kill: unknown signal '%s'", signal_str);
         }
-        tok = strtok_r(NULL, " ", &saveptr);
     }
+
+    pid_t pid = (pid_t)atoi(pid_str);
+    if (kill(pid, sig) != 0)
+        BeaconPrintf(CALLBACK_ERROR, "kill: pid %d: %s\n", pid, strerror(errno));
+    else
+        BeaconPrintf(CALLBACK_OUTPUT, "Sent signal %d to pid %d\n", sig, pid);
 }

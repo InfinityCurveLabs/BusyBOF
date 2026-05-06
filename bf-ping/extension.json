@@ -6,7 +6,8 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "ping.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-c count] <host>"}
+      {"name": "host", "type": "string", "desc": "Host to ping"},
+      {"name": "count", "type": "string", "desc": "Number of pings (default: 3)", "optional": true}
     ]
   }]
 }

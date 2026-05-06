@@ -6,7 +6,8 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "wc.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-lwc] <file>"}
+      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
+      {"name": "options", "type": "string", "desc": "Flags: l (lines), w (words), c (bytes)", "optional": true, "choices": ["l", "w", "c", "lw", "lc", "wc", "lwc"]}
     ]
   }]
 }

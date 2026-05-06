@@ -6,7 +6,9 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "ln.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-s] <target> <linkname>"}
+      {"name": "target", "type": "string", "desc": "Link target"},
+      {"name": "linkname", "type": "string", "desc": "Link name"},
+      {"name": "options", "type": "string", "desc": "Flags: s (symbolic)", "optional": true, "choices": ["s"]}
     ]
   }]
 }

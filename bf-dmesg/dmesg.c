@@ -1,28 +1,18 @@
 /*
  * dmesg.c — BOF: print kernel ring buffer
- * Usage: dmesg [-n lines]
+ * Usage: dmesg [--lines <N>]
  */
 #include "bofdefs.h"
 
 void go(char *args, int alen) {
     int max_lines = 0; /* 0 = all */
 
-    if (args && alen > 0) {
-        datap parser;
-        BeaconDataParse(&parser, args, alen);
-        char *argv_str = BeaconDataExtract(&parser, NULL);
-        if (argv_str && *argv_str) {
-            char *saveptr;
-            char *tok = strtok_r(argv_str, " ", &saveptr);
-            while (tok) {
-                if (strcmp(tok, "-n") == 0) {
-                    tok = strtok_r(NULL, " ", &saveptr);
-                    if (tok) max_lines = atoi(tok);
-                }
-                tok = strtok_r(NULL, " ", &saveptr);
-            }
-        }
-    }
+    datap parser;
+    BeaconDataParse(&parser, args, alen);
+    char *lines_str = BeaconDataExtract(&parser, NULL);
+
+    if (lines_str && *lines_str)
+        max_lines = atoi(lines_str);
 
     /*
      * /dev/kmsg is a streaming device — fgets blocks forever waiting for

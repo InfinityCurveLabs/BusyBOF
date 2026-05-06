@@ -6,7 +6,8 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "strings.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-n minlen] <file>"}
+      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
+      {"name": "min_length", "type": "string", "desc": "Minimum string length (default: 4)", "optional": true}
     ]
   }]
 }

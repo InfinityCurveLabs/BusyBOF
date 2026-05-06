@@ -60,4 +60,21 @@ static inline FILE *bof_pipe_input(void) {
     return NULL;
 }
 
+/*
+ * Auto-trim BeaconDataExtract results.
+ *
+ * When a BOF runs as a pipe sink, the executor concatenates
+ * " /tmp/.bofpipe-XXXXX" onto the first packed string.  If that
+ * string was empty, the result starts with a leading space.
+ * Wrapping every extract through bof_trim avoids the issue
+ * transparently — no BOF needs to know about the quirk.
+ */
+static inline char *bof_trim(char *s) {
+    if (s) while (*s == ' ' || *s == '\t') s++;
+    return s;
+}
+
+#define BeaconDataExtract(parser, size) \
+    bof_trim(BeaconDataExtract(parser, size))
+
 #endif /* _BOFDEFS_H_ */

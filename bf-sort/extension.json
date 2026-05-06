@@ -6,7 +6,8 @@
     "entrypoint": "go",
     "files": [{"os": "linux", "arch": "amd64", "path": "sort.o"}],
     "arguments": [
-      {"name": "args", "type": "string", "desc": "[-r] [-n] <file>"}
+      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
+      {"name": "options", "type": "string", "desc": "Flags: r (reverse), n (numeric)", "optional": true, "choices": ["r", "n", "rn"]}
     ]
   }]
 }
