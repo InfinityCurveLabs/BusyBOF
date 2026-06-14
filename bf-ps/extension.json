@@ -1,10 +1,23 @@
 {
   "name": "bf-ps",
-  "commands": [{
-    "command_name": "bf-ps",
-    "help": "list processes",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "ps.o"}],
-    "arguments": []
-  }]
+  "commands": [
+    {
+      "command_name": "bf-ps",
+      "help": "list processes",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "ps.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "ps.aarch64.obj"
+        }
+      ],
+      "arguments": []
+    }
+  ]
 }

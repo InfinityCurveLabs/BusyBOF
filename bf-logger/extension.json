@@ -1,14 +1,41 @@
 {
   "name": "bf-logger",
-  "commands": [{
-    "command_name": "bf-logger",
-    "help": "write message to syslog",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "logger.o"}],
-    "arguments": [
-      {"name": "message", "type": "string", "desc": "Log message"},
-      {"name": "tag", "type": "string", "desc": "Syslog tag (default: user)", "optional": true},
-      {"name": "priority", "type": "string", "desc": "Syslog priority number (default: 14)", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-logger",
+      "help": "write message to syslog",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "logger.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "logger.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "message",
+          "type": "string",
+          "desc": "Log message"
+        },
+        {
+          "name": "tag",
+          "type": "string",
+          "desc": "Syslog tag (default: user)",
+          "optional": true
+        },
+        {
+          "name": "priority",
+          "type": "string",
+          "desc": "Syslog priority number (default: 14)",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

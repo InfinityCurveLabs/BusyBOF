@@ -1,12 +1,30 @@
 {
   "name": "bf-ifconfig",
-  "commands": [{
-    "command_name": "bf-ifconfig",
-    "help": "show network interfaces",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "ifconfig.o"}],
-    "arguments": [
-      {"name": "interface", "type": "string", "desc": "Interface name", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-ifconfig",
+      "help": "show network interfaces",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "ifconfig.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "ifconfig.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "interface",
+          "type": "string",
+          "desc": "Interface name",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

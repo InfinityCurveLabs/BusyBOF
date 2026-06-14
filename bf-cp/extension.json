@@ -1,13 +1,34 @@
 {
   "name": "bf-cp",
-  "commands": [{
-    "command_name": "bf-cp",
-    "help": "copy files",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "cp.o"}],
-    "arguments": [
-      {"name": "source", "type": "string", "desc": "Source file"},
-      {"name": "dest", "type": "string", "desc": "Destination"}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-cp",
+      "help": "copy files",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "cp.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "cp.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "source",
+          "type": "string",
+          "desc": "Source file"
+        },
+        {
+          "name": "dest",
+          "type": "string",
+          "desc": "Destination"
+        }
+      ]
+    }
+  ]
 }

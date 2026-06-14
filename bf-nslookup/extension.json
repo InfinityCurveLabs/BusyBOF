@@ -1,12 +1,29 @@
 {
   "name": "bf-nslookup",
-  "commands": [{
-    "command_name": "bf-nslookup",
-    "help": "DNS lookup",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "nslookup.o"}],
-    "arguments": [
-      {"name": "host", "type": "string", "desc": "Hostname to resolve"}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-nslookup",
+      "help": "DNS lookup",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "nslookup.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "nslookup.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "host",
+          "type": "string",
+          "desc": "Hostname to resolve"
+        }
+      ]
+    }
+  ]
 }

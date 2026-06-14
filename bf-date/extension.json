@@ -1,12 +1,30 @@
 {
   "name": "bf-date",
-  "commands": [{
-    "command_name": "bf-date",
-    "help": "print current date/time",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "date.o"}],
-    "arguments": [
-      {"name": "format", "type": "string", "desc": "+format string", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-date",
+      "help": "print current date/time",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "date.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "date.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "format",
+          "type": "string",
+          "desc": "+format string",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

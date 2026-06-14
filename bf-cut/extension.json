@@ -1,14 +1,41 @@
 {
   "name": "bf-cut",
-  "commands": [{
-    "command_name": "bf-cut",
-    "help": "extract fields/columns",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "cut.o"}],
-    "arguments": [
-      {"name": "field", "type": "string", "desc": "Field number to extract"},
-      {"name": "delimiter", "type": "string", "desc": "Delimiter character (default: tab)", "optional": true},
-      {"name": "file", "type": "string", "desc": "Input file", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-cut",
+      "help": "extract fields/columns",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "cut.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "cut.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "field",
+          "type": "string",
+          "desc": "Field number to extract"
+        },
+        {
+          "name": "delimiter",
+          "type": "string",
+          "desc": "Delimiter character (default: tab)",
+          "optional": true
+        },
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

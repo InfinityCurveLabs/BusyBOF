@@ -1,13 +1,39 @@
 {
   "name": "bf-du",
-  "commands": [{
-    "command_name": "bf-du",
-    "help": "estimate disk usage",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "du.o"}],
-    "arguments": [
-      {"name": "path", "type": "string", "desc": "Target path (default: .)", "optional": true},
-      {"name": "options", "type": "string", "desc": "Flags: s (summary only)", "optional": true, "choices": ["s"]}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-du",
+      "help": "estimate disk usage",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "du.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "du.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "path",
+          "type": "string",
+          "desc": "Target path (default: .)",
+          "optional": true
+        },
+        {
+          "name": "options",
+          "type": "string",
+          "desc": "Flags: s (summary only)",
+          "optional": true,
+          "choices": [
+            "s"
+          ]
+        }
+      ]
+    }
+  ]
 }

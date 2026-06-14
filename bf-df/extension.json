@@ -1,12 +1,30 @@
 {
   "name": "bf-df",
-  "commands": [{
-    "command_name": "bf-df",
-    "help": "disk space usage",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "df.o"}],
-    "arguments": [
-      {"name": "path", "type": "string", "desc": "Mount point or path", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-df",
+      "help": "disk space usage",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "df.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "df.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "path",
+          "type": "string",
+          "desc": "Mount point or path",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

@@ -1,13 +1,36 @@
 {
   "name": "bf-tail",
-  "commands": [{
-    "command_name": "bf-tail",
-    "help": "output last part of file",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "tail.o"}],
-    "arguments": [
-      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
-      {"name": "lines", "type": "string", "desc": "Number of lines (default: 10)", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-tail",
+      "help": "output last part of file",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "tail.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "tail.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file",
+          "optional": true
+        },
+        {
+          "name": "lines",
+          "type": "string",
+          "desc": "Number of lines (default: 10)",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

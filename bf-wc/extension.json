@@ -1,13 +1,45 @@
 {
   "name": "bf-wc",
-  "commands": [{
-    "command_name": "bf-wc",
-    "help": "word, line, byte count",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "wc.o"}],
-    "arguments": [
-      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
-      {"name": "options", "type": "string", "desc": "Flags: l (lines), w (words), c (bytes)", "optional": true, "choices": ["l", "w", "c", "lw", "lc", "wc", "lwc"]}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-wc",
+      "help": "word, line, byte count",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "wc.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "wc.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file",
+          "optional": true
+        },
+        {
+          "name": "options",
+          "type": "string",
+          "desc": "Flags: l (lines), w (words), c (bytes)",
+          "optional": true,
+          "choices": [
+            "l",
+            "w",
+            "c",
+            "lw",
+            "lc",
+            "wc",
+            "lwc"
+          ]
+        }
+      ]
+    }
+  ]
 }

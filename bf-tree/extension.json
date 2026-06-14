@@ -1,14 +1,51 @@
 {
   "name": "bf-tree",
-  "commands": [{
-    "command_name": "bf-tree",
-    "help": "recursive directory tree listing",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "tree.o"}],
-    "arguments": [
-      {"name": "path", "type": "string", "desc": "Root path (default: .)", "optional": true},
-      {"name": "options", "type": "string", "desc": "Flags: a (all), d (dirs only), F (full paths)", "optional": true, "choices": ["a", "d", "F", "ad", "aF", "dF", "adF"]},
-      {"name": "depth", "type": "string", "desc": "Max depth", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-tree",
+      "help": "recursive directory tree listing",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "tree.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "tree.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "path",
+          "type": "string",
+          "desc": "Root path (default: .)",
+          "optional": true
+        },
+        {
+          "name": "options",
+          "type": "string",
+          "desc": "Flags: a (all), d (dirs only), F (full paths)",
+          "optional": true,
+          "choices": [
+            "a",
+            "d",
+            "F",
+            "ad",
+            "aF",
+            "dF",
+            "adF"
+          ]
+        },
+        {
+          "name": "depth",
+          "type": "string",
+          "desc": "Max depth",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

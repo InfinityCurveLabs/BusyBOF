@@ -1,13 +1,35 @@
 {
   "name": "bf-head",
-  "commands": [{
-    "command_name": "bf-head",
-    "help": "output first part of file",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "head.o"}],
-    "arguments": [
-      {"name": "file", "type": "string", "desc": "Input file"},
-      {"name": "lines", "type": "string", "desc": "Number of lines (default: 10)", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-head",
+      "help": "output first part of file",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "head.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "head.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file"
+        },
+        {
+          "name": "lines",
+          "type": "string",
+          "desc": "Number of lines (default: 10)",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

@@ -1,13 +1,39 @@
 {
   "name": "bf-uniq",
-  "commands": [{
-    "command_name": "bf-uniq",
-    "help": "remove duplicate adjacent lines",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "uniq.o"}],
-    "arguments": [
-      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
-      {"name": "options", "type": "string", "desc": "Flags: c (show count)", "optional": true, "choices": ["c"]}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-uniq",
+      "help": "remove duplicate adjacent lines",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "uniq.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "uniq.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file",
+          "optional": true
+        },
+        {
+          "name": "options",
+          "type": "string",
+          "desc": "Flags: c (show count)",
+          "optional": true,
+          "choices": [
+            "c"
+          ]
+        }
+      ]
+    }
+  ]
 }

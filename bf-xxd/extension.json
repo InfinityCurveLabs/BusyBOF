@@ -1,13 +1,36 @@
 {
   "name": "bf-xxd",
-  "commands": [{
-    "command_name": "bf-xxd",
-    "help": "hex dump",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "xxd.o"}],
-    "arguments": [
-      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
-      {"name": "length", "type": "string", "desc": "Number of bytes to dump", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-xxd",
+      "help": "hex dump",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "xxd.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "xxd.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file",
+          "optional": true
+        },
+        {
+          "name": "length",
+          "type": "string",
+          "desc": "Number of bytes to dump",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

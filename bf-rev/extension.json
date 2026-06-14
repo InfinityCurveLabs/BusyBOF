@@ -1,7 +1,29 @@
 {
   "name": "bf-rev",
-  "commands": [{"command_name": "bf-rev", "help": "reverse lines of a file", "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "rev.o"}],
-    "arguments": [{"name": "file", "type": "string", "desc": "Input file"}]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-rev",
+      "help": "reverse lines of a file",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "rev.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "rev.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file"
+        }
+      ]
+    }
+  ]
 }

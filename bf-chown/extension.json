@@ -1,13 +1,34 @@
 {
   "name": "bf-chown",
-  "commands": [{
-    "command_name": "bf-chown",
-    "help": "change file ownership",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "chown.o"}],
-    "arguments": [
-      {"name": "owner", "type": "string", "desc": "user[:group]"},
-      {"name": "target", "type": "string", "desc": "File path(s)"}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-chown",
+      "help": "change file ownership",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "chown.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "chown.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "owner",
+          "type": "string",
+          "desc": "user[:group]"
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "desc": "File path(s)"
+        }
+      ]
+    }
+  ]
 }

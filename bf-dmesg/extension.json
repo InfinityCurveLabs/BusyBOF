@@ -1,9 +1,30 @@
 {
   "name": "bf-dmesg",
-  "commands": [{"command_name": "bf-dmesg", "help": "print kernel ring buffer", "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "dmesg.o"}],
-    "arguments": [
-      {"name": "lines", "type": "string", "desc": "Number of lines to show (default: all)", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-dmesg",
+      "help": "print kernel ring buffer",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "dmesg.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "dmesg.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "lines",
+          "type": "string",
+          "desc": "Number of lines to show (default: all)",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

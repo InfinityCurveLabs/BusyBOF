@@ -1,12 +1,29 @@
 {
   "name": "bf-paste",
-  "commands": [{
-    "command_name": "bf-paste",
-    "help": "merge lines of files",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "paste.o"}],
-    "arguments": [
-      {"name": "files", "type": "string", "desc": "Space-separated file paths (min 2)"}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-paste",
+      "help": "merge lines of files",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "paste.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "paste.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "files",
+          "type": "string",
+          "desc": "Space-separated file paths (min 2)"
+        }
+      ]
+    }
+  ]
 }

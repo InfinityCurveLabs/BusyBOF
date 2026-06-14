@@ -1,13 +1,35 @@
 {
   "name": "bf-wget",
-  "commands": [{
-    "command_name": "bf-wget",
-    "help": "HTTP GET download",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "wget.o"}],
-    "arguments": [
-      {"name": "url", "type": "string", "desc": "URL to download"},
-      {"name": "output", "type": "string", "desc": "Output file", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-wget",
+      "help": "HTTP GET download",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "wget.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "wget.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "url",
+          "type": "string",
+          "desc": "URL to download"
+        },
+        {
+          "name": "output",
+          "type": "string",
+          "desc": "Output file",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

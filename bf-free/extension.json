@@ -1,10 +1,23 @@
 {
   "name": "bf-free",
-  "commands": [{
-    "command_name": "bf-free",
-    "help": "display memory usage",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "free.o"}],
-    "arguments": []
-  }]
+  "commands": [
+    {
+      "command_name": "bf-free",
+      "help": "display memory usage",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "free.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "free.aarch64.obj"
+        }
+      ],
+      "arguments": []
+    }
+  ]
 }

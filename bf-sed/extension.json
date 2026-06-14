@@ -1,13 +1,34 @@
 {
   "name": "bf-sed",
-  "commands": [{
-    "command_name": "bf-sed",
-    "help": "stream editor (s/old/new/g)",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "sed.o"}],
-    "arguments": [
-      {"name": "expression", "type": "string", "desc": "s/pattern/replacement/[g]"},
-      {"name": "file", "type": "string", "desc": "Input file"}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-sed",
+      "help": "stream editor (s/old/new/g)",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "sed.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "sed.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "expression",
+          "type": "string",
+          "desc": "s/pattern/replacement/[g]"
+        },
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file"
+        }
+      ]
+    }
+  ]
 }

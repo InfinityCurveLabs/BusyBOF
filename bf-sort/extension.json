@@ -1,13 +1,41 @@
 {
   "name": "bf-sort",
-  "commands": [{
-    "command_name": "bf-sort",
-    "help": "sort lines of a file",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "sort.o"}],
-    "arguments": [
-      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
-      {"name": "options", "type": "string", "desc": "Flags: r (reverse), n (numeric)", "optional": true, "choices": ["r", "n", "rn"]}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-sort",
+      "help": "sort lines of a file",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "sort.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "sort.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file",
+          "optional": true
+        },
+        {
+          "name": "options",
+          "type": "string",
+          "desc": "Flags: r (reverse), n (numeric)",
+          "optional": true,
+          "choices": [
+            "r",
+            "n",
+            "rn"
+          ]
+        }
+      ]
+    }
+  ]
 }

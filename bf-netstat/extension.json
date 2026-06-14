@@ -1,12 +1,30 @@
 {
   "name": "bf-netstat",
-  "commands": [{
-    "command_name": "bf-netstat",
-    "help": "show network connections",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "netstat.o"}],
-    "arguments": [
-      {"name": "flags", "type": "string", "desc": "[-tlnpu]", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-netstat",
+      "help": "show network connections",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "netstat.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "netstat.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "flags",
+          "type": "string",
+          "desc": "[-tlnpu]",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

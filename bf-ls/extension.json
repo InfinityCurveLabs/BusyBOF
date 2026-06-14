@@ -1,13 +1,45 @@
 {
   "name": "bf-ls",
-  "commands": [{
-    "command_name": "bf-ls",
-    "help": "list directory contents",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "ls.o"}],
-    "arguments": [
-      {"name": "path", "type": "string", "desc": "Directory path (default: .)", "optional": true},
-      {"name": "options", "type": "string", "desc": "Flags: l (long), a (all), F (full paths)", "optional": true, "choices": ["l", "a", "F", "la", "lF", "aF", "laF"]}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-ls",
+      "help": "list directory contents",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "ls.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "ls.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "path",
+          "type": "string",
+          "desc": "Directory path (default: .)",
+          "optional": true
+        },
+        {
+          "name": "options",
+          "type": "string",
+          "desc": "Flags: l (long), a (all), F (full paths)",
+          "optional": true,
+          "choices": [
+            "l",
+            "a",
+            "F",
+            "la",
+            "lF",
+            "aF",
+            "laF"
+          ]
+        }
+      ]
+    }
+  ]
 }

@@ -1,15 +1,50 @@
 {
   "name": "bf-tr",
-  "commands": [{
-    "command_name": "bf-tr",
-    "help": "translate/delete characters",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "tr.o"}],
-    "arguments": [
-      {"name": "set1", "type": "string", "desc": "Source character set"},
-      {"name": "set2", "type": "string", "desc": "Replacement character set", "optional": true},
-      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
-      {"name": "options", "type": "string", "desc": "Flags: d (delete set1 chars)", "optional": true, "choices": ["d"]}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-tr",
+      "help": "translate/delete characters",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "tr.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "tr.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "set1",
+          "type": "string",
+          "desc": "Source character set"
+        },
+        {
+          "name": "set2",
+          "type": "string",
+          "desc": "Replacement character set",
+          "optional": true
+        },
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file",
+          "optional": true
+        },
+        {
+          "name": "options",
+          "type": "string",
+          "desc": "Flags: d (delete set1 chars)",
+          "optional": true,
+          "choices": [
+            "d"
+          ]
+        }
+      ]
+    }
+  ]
 }

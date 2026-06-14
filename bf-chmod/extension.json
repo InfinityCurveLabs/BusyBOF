@@ -1,13 +1,34 @@
 {
   "name": "bf-chmod",
-  "commands": [{
-    "command_name": "bf-chmod",
-    "help": "change file permissions",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "chmod.o"}],
-    "arguments": [
-      {"name": "mode", "type": "string", "desc": "Octal permissions (e.g. 755)"},
-      {"name": "target", "type": "string", "desc": "File path(s)"}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-chmod",
+      "help": "change file permissions",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "chmod.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "chmod.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "mode",
+          "type": "string",
+          "desc": "Octal permissions (e.g. 755)"
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "desc": "File path(s)"
+        }
+      ]
+    }
+  ]
 }

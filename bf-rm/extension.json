@@ -1,13 +1,40 @@
 {
   "name": "bf-rm",
-  "commands": [{
-    "command_name": "bf-rm",
-    "help": "remove files/directories",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "rm.o"}],
-    "arguments": [
-      {"name": "path", "type": "string", "desc": "Path to remove"},
-      {"name": "options", "type": "string", "desc": "Flags: r (recursive), f (force)", "optional": true, "choices": ["r", "f", "rf"]}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-rm",
+      "help": "remove files/directories",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "rm.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "rm.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "path",
+          "type": "string",
+          "desc": "Path to remove"
+        },
+        {
+          "name": "options",
+          "type": "string",
+          "desc": "Flags: r (recursive), f (force)",
+          "optional": true,
+          "choices": [
+            "r",
+            "f",
+            "rf"
+          ]
+        }
+      ]
+    }
+  ]
 }

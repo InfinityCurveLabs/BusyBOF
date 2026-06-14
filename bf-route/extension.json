@@ -1,7 +1,23 @@
 {
   "name": "bf-route",
-  "commands": [{"command_name": "bf-route", "help": "show routing table", "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "route.o"}],
-    "arguments": []
-  }]
+  "commands": [
+    {
+      "command_name": "bf-route",
+      "help": "show routing table",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "route.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "route.aarch64.obj"
+        }
+      ],
+      "arguments": []
+    }
+  ]
 }

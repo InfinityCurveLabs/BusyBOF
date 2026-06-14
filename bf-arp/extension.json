@@ -1,10 +1,23 @@
 {
   "name": "bf-arp",
-  "commands": [{
-    "command_name": "bf-arp",
-    "help": "arp",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "arp.o"}],
-    "arguments": []
-  }]
+  "commands": [
+    {
+      "command_name": "bf-arp",
+      "help": "arp",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "arp.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "arp.aarch64.obj"
+        }
+      ],
+      "arguments": []
+    }
+  ]
 }

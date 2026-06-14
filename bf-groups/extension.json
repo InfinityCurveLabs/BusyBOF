@@ -1,9 +1,30 @@
 {
   "name": "bf-groups",
-  "commands": [{"command_name": "bf-groups", "help": "print group memberships", "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "groups.o"}],
-    "arguments": [
-      {"name": "user", "type": "string", "desc": "Username (default: current user)", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-groups",
+      "help": "print group memberships",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "groups.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "groups.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "user",
+          "type": "string",
+          "desc": "Username (default: current user)",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

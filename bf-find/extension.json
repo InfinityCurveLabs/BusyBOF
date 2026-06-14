@@ -1,13 +1,35 @@
 {
   "name": "bf-find",
-  "commands": [{
-    "command_name": "bf-find",
-    "help": "search for files",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "find.o"}],
-    "arguments": [
-      {"name": "path", "type": "string", "desc": "Search path"},
-      {"name": "options", "type": "string", "desc": "-name pattern or -type f|d|l", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-find",
+      "help": "search for files",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "find.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "find.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "path",
+          "type": "string",
+          "desc": "Search path"
+        },
+        {
+          "name": "options",
+          "type": "string",
+          "desc": "-name pattern or -type f|d|l",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

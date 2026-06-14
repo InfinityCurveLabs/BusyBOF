@@ -1,7 +1,23 @@
 {
   "name": "bf-lsmod",
-  "commands": [{"command_name": "bf-lsmod", "help": "list loaded kernel modules", "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "lsmod.o"}],
-    "arguments": []
-  }]
+  "commands": [
+    {
+      "command_name": "bf-lsmod",
+      "help": "list loaded kernel modules",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "lsmod.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "lsmod.aarch64.obj"
+        }
+      ],
+      "arguments": []
+    }
+  ]
 }

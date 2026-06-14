@@ -1,13 +1,36 @@
 {
   "name": "bf-strings",
-  "commands": [{
-    "command_name": "bf-strings",
-    "help": "find printable strings",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "strings.o"}],
-    "arguments": [
-      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
-      {"name": "min_length", "type": "string", "desc": "Minimum string length (default: 4)", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-strings",
+      "help": "find printable strings",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "strings.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "strings.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file",
+          "optional": true
+        },
+        {
+          "name": "min_length",
+          "type": "string",
+          "desc": "Minimum string length (default: 4)",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

@@ -1,12 +1,29 @@
 {
   "name": "bf-traceroute",
-  "commands": [{
-    "command_name": "bf-traceroute",
-    "help": "trace route to host",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "traceroute.o"}],
-    "arguments": [
-      {"name": "host", "type": "string", "desc": "Target host"}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-traceroute",
+      "help": "trace route to host",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "traceroute.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "traceroute.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "host",
+          "type": "string",
+          "desc": "Target host"
+        }
+      ]
+    }
+  ]
 }

@@ -1,13 +1,34 @@
 {
   "name": "bf-mv",
-  "commands": [{
-    "command_name": "bf-mv",
-    "help": "move/rename files",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "mv.o"}],
-    "arguments": [
-      {"name": "source", "type": "string", "desc": "Source file"},
-      {"name": "dest", "type": "string", "desc": "Destination"}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-mv",
+      "help": "move/rename files",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "mv.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "mv.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "source",
+          "type": "string",
+          "desc": "Source file"
+        },
+        {
+          "name": "dest",
+          "type": "string",
+          "desc": "Destination"
+        }
+      ]
+    }
+  ]
 }

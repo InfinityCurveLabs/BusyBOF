@@ -1,14 +1,43 @@
 {
   "name": "bf-ln",
-  "commands": [{
-    "command_name": "bf-ln",
-    "help": "create links",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "ln.o"}],
-    "arguments": [
-      {"name": "target", "type": "string", "desc": "Link target"},
-      {"name": "linkname", "type": "string", "desc": "Link name"},
-      {"name": "options", "type": "string", "desc": "Flags: s (symbolic)", "optional": true, "choices": ["s"]}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-ln",
+      "help": "create links",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "ln.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "ln.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "target",
+          "type": "string",
+          "desc": "Link target"
+        },
+        {
+          "name": "linkname",
+          "type": "string",
+          "desc": "Link name"
+        },
+        {
+          "name": "options",
+          "type": "string",
+          "desc": "Flags: s (symbolic)",
+          "optional": true,
+          "choices": [
+            "s"
+          ]
+        }
+      ]
+    }
+  ]
 }

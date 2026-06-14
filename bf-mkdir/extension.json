@@ -1,13 +1,38 @@
 {
   "name": "bf-mkdir",
-  "commands": [{
-    "command_name": "bf-mkdir",
-    "help": "create directories",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "mkdir.o"}],
-    "arguments": [
-      {"name": "path", "type": "string", "desc": "Directory to create"},
-      {"name": "options", "type": "string", "desc": "Flags: p (create parents)", "optional": true, "choices": ["p"]}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-mkdir",
+      "help": "create directories",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "mkdir.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "mkdir.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "path",
+          "type": "string",
+          "desc": "Directory to create"
+        },
+        {
+          "name": "options",
+          "type": "string",
+          "desc": "Flags: p (create parents)",
+          "optional": true,
+          "choices": [
+            "p"
+          ]
+        }
+      ]
+    }
+  ]
 }

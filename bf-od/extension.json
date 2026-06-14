@@ -1,12 +1,61 @@
 {
   "name": "bf-od",
-  "commands": [{"command_name": "bf-od", "help": "octal dump", "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "od.o"}],
-    "arguments": [
-      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
-      {"name": "address_format", "type": "string", "desc": "Address format (default: o)", "optional": true, "default": "o", "choices": ["x", "o", "d", "n"]},
-      {"name": "type_format", "type": "string", "desc": "Output type (default: o)", "optional": true, "default": "o", "choices": ["x", "o", "c"]},
-      {"name": "max_bytes", "type": "string", "desc": "Maximum bytes to read", "optional": true}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-od",
+      "help": "octal dump",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "od.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "od.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file",
+          "optional": true
+        },
+        {
+          "name": "address_format",
+          "type": "string",
+          "desc": "Address format (default: o)",
+          "optional": true,
+          "default": "o",
+          "choices": [
+            "x",
+            "o",
+            "d",
+            "n"
+          ]
+        },
+        {
+          "name": "type_format",
+          "type": "string",
+          "desc": "Output type (default: o)",
+          "optional": true,
+          "default": "o",
+          "choices": [
+            "x",
+            "o",
+            "c"
+          ]
+        },
+        {
+          "name": "max_bytes",
+          "type": "string",
+          "desc": "Maximum bytes to read",
+          "optional": true
+        }
+      ]
+    }
+  ]
 }

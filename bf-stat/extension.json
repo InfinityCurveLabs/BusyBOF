@@ -1,12 +1,29 @@
 {
   "name": "bf-stat",
-  "commands": [{
-    "command_name": "bf-stat",
-    "help": "display file status",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "stat.o"}],
-    "arguments": [
-      {"name": "target", "type": "string", "desc": "File path(s)"}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-stat",
+      "help": "display file status",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "stat.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "stat.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "target",
+          "type": "string",
+          "desc": "File path(s)"
+        }
+      ]
+    }
+  ]
 }

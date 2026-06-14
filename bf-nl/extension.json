@@ -1,7 +1,29 @@
 {
   "name": "bf-nl",
-  "commands": [{"command_name": "bf-nl", "help": "number lines of a file", "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "nl.o"}],
-    "arguments": [{"name": "file", "type": "string", "desc": "Input file"}]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-nl",
+      "help": "number lines of a file",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "nl.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "nl.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file"
+        }
+      ]
+    }
+  ]
 }

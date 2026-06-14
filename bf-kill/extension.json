@@ -1,13 +1,46 @@
 {
   "name": "bf-kill",
-  "commands": [{
-    "command_name": "bf-kill",
-    "help": "send signal to process",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "kill.o"}],
-    "arguments": [
-      {"name": "pid", "type": "string", "desc": "Process ID"},
-      {"name": "signal", "type": "string", "desc": "Signal name or number (default: TERM)", "optional": true, "default": "TERM", "choices": ["HUP", "INT", "KILL", "TERM", "STOP", "CONT", "USR1", "USR2"]}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-kill",
+      "help": "send signal to process",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "kill.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "kill.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "pid",
+          "type": "string",
+          "desc": "Process ID"
+        },
+        {
+          "name": "signal",
+          "type": "string",
+          "desc": "Signal name or number (default: TERM)",
+          "optional": true,
+          "default": "TERM",
+          "choices": [
+            "HUP",
+            "INT",
+            "KILL",
+            "TERM",
+            "STOP",
+            "CONT",
+            "USR1",
+            "USR2"
+          ]
+        }
+      ]
+    }
+  ]
 }

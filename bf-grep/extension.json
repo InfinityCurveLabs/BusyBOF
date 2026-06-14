@@ -1,14 +1,50 @@
 {
   "name": "bf-grep",
-  "commands": [{
-    "command_name": "bf-grep",
-    "help": "search file contents",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "grep.o"}],
-    "arguments": [
-      {"name": "pattern", "type": "string", "desc": "Search pattern"},
-      {"name": "file", "type": "string", "desc": "Input file", "optional": true},
-      {"name": "options", "type": "string", "desc": "Flags: i (ignore case), n (line numbers), v (invert)", "optional": true, "choices": ["i", "n", "v", "in", "iv", "nv", "inv"]}
-    ]
-  }]
+  "commands": [
+    {
+      "command_name": "bf-grep",
+      "help": "search file contents",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "grep.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "grep.aarch64.obj"
+        }
+      ],
+      "arguments": [
+        {
+          "name": "pattern",
+          "type": "string",
+          "desc": "Search pattern"
+        },
+        {
+          "name": "file",
+          "type": "string",
+          "desc": "Input file",
+          "optional": true
+        },
+        {
+          "name": "options",
+          "type": "string",
+          "desc": "Flags: i (ignore case), n (line numbers), v (invert)",
+          "optional": true,
+          "choices": [
+            "i",
+            "n",
+            "v",
+            "in",
+            "iv",
+            "nv",
+            "inv"
+          ]
+        }
+      ]
+    }
+  ]
 }

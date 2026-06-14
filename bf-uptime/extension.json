@@ -1,10 +1,23 @@
 {
   "name": "bf-uptime",
-  "commands": [{
-    "command_name": "bf-uptime",
-    "help": "print system uptime",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "uptime.o"}],
-    "arguments": []
-  }]
+  "commands": [
+    {
+      "command_name": "bf-uptime",
+      "help": "print system uptime",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "uptime.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "uptime.aarch64.obj"
+        }
+      ],
+      "arguments": []
+    }
+  ]
 }

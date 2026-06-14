@@ -1,10 +1,23 @@
 {
   "name": "bf-id",
-  "commands": [{
-    "command_name": "bf-id",
-    "help": "print user/group IDs",
-    "entrypoint": "go",
-    "files": [{"os": "linux", "arch": "amd64", "path": "id.o"}],
-    "arguments": []
-  }]
+  "commands": [
+    {
+      "command_name": "bf-id",
+      "help": "print user/group IDs",
+      "entrypoint": "go",
+      "files": [
+        {
+          "os": "linux",
+          "arch": "amd64",
+          "path": "id.x64.obj"
+        },
+        {
+          "os": "linux",
+          "arch": "arm64",
+          "path": "id.aarch64.obj"
+        }
+      ],
+      "arguments": []
+    }
+  ]
 }
