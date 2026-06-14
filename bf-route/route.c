@@ -19,7 +19,7 @@ void go(char *args, int alen) {
         "Destination", "Gateway", "Genmask", "Flags", "Metric", "Ref", "Iface");
 
     char line[512];
-    fgets(line, sizeof(line), fp); /* skip header */
+    if (!fgets(line, sizeof(line), fp)) { fclose(fp); return; } /* skip header */
 
     while (fgets(line, sizeof(line), fp)) {
         char iface[32], dest_hex[16], gw_hex[16], mask_hex[16];

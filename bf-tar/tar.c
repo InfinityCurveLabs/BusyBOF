@@ -230,7 +230,9 @@ static void tar_extract_or_list(const char *archive, const char *destdir,
                 /* Ensure parent exists */
                 char *sl = strrchr(fullpath, '/');
                 if (sl) { *sl = '\0'; mkdir_p(fullpath, 0755); *sl = '/'; }
-                symlink(target, fullpath);
+                if (symlink(target, fullpath) == -1) {
+                    BeaconPrintf(CALLBACK_ERROR, "symlink: %s: %s\n", fullpath, strerror(errno));
+                }
             } else {
                 /* Regular file */
                 char *sl = strrchr(fullpath, '/');
